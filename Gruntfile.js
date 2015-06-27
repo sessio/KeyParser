@@ -33,7 +33,10 @@ module.exports = function(grunt) {
     },
     concurrent: {
       dev: {
-        tasks: ['nodemon:start', 'watch:clientjs']
+        tasks: ['nodemon:start', 'watch:clientjs'],
+        options: {
+          logConcurrentOutput: true
+        }
       }
     }
   });

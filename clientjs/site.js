@@ -19,7 +19,6 @@ $(function() {
   $("#select-parser").change(DoParse);
 
   function DoParse() {
-    console.log("doing parse updated");
     var data = readJson();
     if (data || true) {
       var Parser = findParser($("#parser-select").val());
