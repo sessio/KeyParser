@@ -1,0 +1,13 @@
+{
+  "libs": [
+    "browser",
+    "jquery",
+    "ecma5"
+  ],
+  "loadEagerly": [
+    "www/js/**/*.js"
+  ],
+  "dontLoad": [
+    "node_modules/**/*.js"
+  ]
+}
