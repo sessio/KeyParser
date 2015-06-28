@@ -1,0 +1,21 @@
+html(lang="en")
+	head
+		include templates/head.html
+		link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css")
+		link(rel="stylesheet", href="/css/site.css")
+		
+	body
+		include templates/navbar.html
+		
+		include app.jade
+
+		script(src="/assets/json3/lib/json3.min.js")
+		script(src="//code.jquery.com/jquery-1.11.3.min.js")
+		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
+		
+		if (production)
+			script(src="/js/build.js")
+		else		
+			script(src="/debugjs/alerts.js")
+			script(src="/debugjs/droparea.js")
+			script(src="/debugjs/parser.js")

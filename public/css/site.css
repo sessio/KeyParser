@@ -1,0 +1,40 @@
+body {
+	padding-top: 50px;
+}
+.app-content {
+	padding: 40px 15px;
+	text-align: center;
+}
+.app-section {
+	margin-bottom: 10rem;
+}
+
+#app-results {
+	display: none;
+}
+
+#droptarget {
+	margin-top: 5rem;
+  margin-bottom: 5rem;
+  margin-left: auto;
+  margin-right: auto;
+	border-radius: 50%;
+	background-color: #aaa;
+	height: 400px;
+	width: 400px;
+	text-align: center;
+	align-content: center;
+	vertical-align: middle;
+	line-height: 400px;
+	font-size: 200%;
+  display: block;
+}
+#droptarget.active {
+	background-color: #faa;
+}
+#pasteinput {
+	display: none;
+}
+#app-results {
+	padding-top: 10rem;
+}

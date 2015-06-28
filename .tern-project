@@ -5,9 +5,10 @@
     "ecma5"
   ],
   "loadEagerly": [
-    "www/js/**/*.js"
+    "public/js/**/*.js"
   ],
   "dontLoad": [
-    "node_modules/**/*.js"
+    "node_modules/**/*.js",
+    "bower_components/**/*.js"
   ]
 }

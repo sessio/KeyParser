@@ -2,52 +2,95 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     jshint: {
-      files: ['Gruntfile.js', 'clientjs/**/*.js', 'index.js'],
+      files: ['Gruntfile.js', 'public/**/*.js', 'server/**/*.js'],
       options: {
         globals: {
           jQuery: true
         }
       }
     },
+
     uglify: {
       dist: {
         files: {
-            'build/build.js': ['clientjs/**/*.js']
+          'dist/js/build.js': ['public/**/*.js']
         }
       }
     },
+
     watch: {
       clientjs: {
-        files: ['clientjs/**/*.js'],
+        files: ['public/**/*.js'],
         tasks: ['jshint', 'uglify']
+      },
+      css: {
+        files: ['public/css/**'],
+        tasks: ['exec:copywww']
       }
     },
+
     nodemon: {
-      start: {
-        script: "index.js",
+      dev: {
+        script: "server/index.js",
         options: {
+          env: {
+            NODE_ENV: "dev"
+          },
           ignore: ['node_modules/**', 'bower_components/**'],
-          watch: ['Gruntfile.js', 'index.js'],
+          watch: ['Gruntfile.js', 'server/**/*.js'],
+        }
+      },
+      prod: {
+        script: "server/index.js",
+        options: {
+          env: {
+            NODE_ENV: "production"
+          },
         }
       }
     },
+
     concurrent: {
       dev: {
-        tasks: ['nodemon:start', 'watch:clientjs'],
+        tasks: ['nodemon:dev', 'watch:clientjs', 'watch:css'],
+        options: {
+          logConcurrentOutput: true
+        }
+      },
+      prod: {
+        tasks: ['nodemon:prod'],
         options: {
           logConcurrentOutput: true
         }
       }
+    },
+
+    exec: {
+      clearwww: 'rm -rf dist && mkdir -p dist/css && mkdir -p dist/js',
+      copywww: 'cp -R public/css/* dist/css'
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('default', ['jshint', 'uglify', 'concurrent:dev']);
+  grunt.registerTask('default', [
+    'jshint',
+    'exec:clearwww',
+    'exec:copywww',
+    'concurrent:dev'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'exec:clearwww',
+    'exec:copywww',
+    'uglify',
+    'concurrent:prod'
+  ]);
 
 };
