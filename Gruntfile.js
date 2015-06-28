@@ -56,12 +56,6 @@ module.exports = function(grunt) {
         options: {
           logConcurrentOutput: true
         }
-      },
-      prod: {
-        tasks: ['nodemon:prod'],
-        options: {
-          logConcurrentOutput: true
-        }
       }
     },
 
@@ -76,7 +70,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
-  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-exec');
 
   grunt.registerTask('default', [
@@ -90,7 +83,7 @@ module.exports = function(grunt) {
     'exec:clearwww',
     'exec:copywww',
     'uglify',
-    'concurrent:prod'
+    'nodemon:prod'
   ]);
 
 };
