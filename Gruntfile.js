@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         script: "server/index.js",
         options: {
           env: {
-            NODE_ENV: "dev"
+            NODE_ENV: "development"
           },
           ignore: ['node_modules/**', 'bower_components/**'],
           watch: ['Gruntfile.js', 'server/**/*.js'],
