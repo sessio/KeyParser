@@ -1,24 +1,42 @@
 $(function() {
+	var zclient = new ZeroClipboard(document.getElementById("copy-results"));
+
+	$("#show-results").click(function() {
+		$("#csv-output").toggle();
+	});
+
 	function handleFileUpload(files) {
+		var file = files[0];
 		var reader = new FileReader();
+
 		reader.onload = function(data) {
-			var exportsObj = JSON.parse(data.target.result);
-			var parser = new KeyParser(exportsObj);
-			//$("#droptarget").text(parser.results.length + " Passwords found");
-			if (parser.results.length > 0) {
+			try {
+				var exportsObj;
+				try {
+					exportsObj = JSON.parse(data.target.result);
+				} catch (err) {
+					throw "Error parsing file " + file.name + ": " + err;
+				}
+
+				var parser = new KeyParser(exportsObj);
+				if (parser.results.length === 0) throw "No passwords inside";
+
 				var csv = parser.getCSV();
 				var dataurl = "data:application/octet-stream," + encodeURIComponent(csv);
+
+				$("#csv-output").hide().val(csv);
 				$("#download-results").prop("href", dataurl);
 				$("#headline").text(parser.results.length + " Passwords found");
 				$("#droptarget").addClass("fadeout").one("transitionend", function() {
 					$("#droptarget").hide();
 					$("#app-results").fadeIn();
 				});
-			} else {
-				AppAlerts.Error("Wrong file format or 0 passwords");
+			} catch (err) {
+				AppAlerts.Error(err);
 			}
 		};
-		reader.readAsText(files[0]);
+
+		reader.readAsText(file);
 	}
 
 	function dragenter(e) {
@@ -51,7 +69,8 @@ $(function() {
 
 	var dropbox = document.getElementById("droptarget");
 	dropbox.addEventListener("dragenter", dragenter, false);
-	dropbox.addEventListener("dragleave", dragleave, false);
+	dropbox.addEventListener(
+		"dragleave", dragleave, false);
 	dropbox.addEventListener("dragover", dragover, false);
 	dropbox.addEventListener("drop", drop, false);
 });
