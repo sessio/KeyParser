@@ -17,11 +17,13 @@ function KeyParser(data) {
 }
 
 KeyParser.prototype.getCSV = function() {
-	var res = "name%2Curl%2Cusername%2Cpassword%0A";
+	//var res = "name%2Curl%2Cusername%2Cpassword%0A";
+	var res = "name,url,username,password\n";
 	for (var index in this.results) {
 		if (this.results.hasOwnProperty(index)) {
 			var el = this.results[index];
-			res += el.name + "%2C" + el.url + "%2C" + el.username + "%2C" + el.password + "%0A";
+			//res += el.name + "%2C" + el.url + "%2C" + el.username + "%2C" + el.password + "%0A";
+			res += el.name + "," + el.url + "," + el.username + "," + el.password + "\n";
 		}
 	}
 	return res;

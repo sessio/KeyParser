@@ -28,10 +28,17 @@ body {
 	line-height: 400px;
 	font-size: 200%;
   display: block;
+	transition: all 0.2s ease-in-out;
 }
 #droptarget.active {
-	background-color: #faa;
+	transform: scale(1.2);
+	opacity: 0.5;
 }
+#droptarget.fadeout {
+	transform: scale(0.0) rotateY(180deg);
+	opacity: 0;
+}
+
 #pasteinput {
 	display: none;
 }

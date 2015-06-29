@@ -7,11 +7,13 @@ $(function() {
 			//$("#droptarget").text(parser.results.length + " Passwords found");
 			if (parser.results.length > 0) {
 				var csv = parser.getCSV();
-				var dataurl = "data:application/octet-stream," + csv;
+				var dataurl = "data:application/octet-stream," + encodeURIComponent(csv);
 				$("#download-results").prop("href", dataurl);
-				$("#results-headline").text(parser.results.length + " Passwords found");
-				$("#app-droparea").hide();
-				$("#app-results").fadeIn();
+				$("#headline").text(parser.results.length + " Passwords found");
+				$("#droptarget").addClass("fadeout").one("transitionend", function() {
+					$("#droptarget").hide();
+					$("#app-results").fadeIn();
+				});
 			} else {
 				AppAlerts.Error("Wrong file format or 0 passwords");
 			}
@@ -36,6 +38,8 @@ $(function() {
 	}
 
 	function drop(e) {
+		$("#droptarget").removeClass("active");
+
 		e.stopPropagation();
 		e.preventDefault();
 
