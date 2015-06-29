@@ -1,3 +1,6 @@
+/***
+These are matched against NODE_ENV
+*/
 module.exports = {
   "development": {
     "listen": "127.0.0.1",
