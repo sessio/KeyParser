@@ -1,29 +1,54 @@
-function KeyParser(data) {
+function KeyParser() {
 	this.results = [];
+	this.failures = [];
 
-	if (!data.data) return;
-
-	for (var key in data.data) {
-		if (data.data.hasOwnProperty(key)) {
-			var el = data.data[key];
-			this.results.push({
-				name: el.service || el.url,
-				url: el.url,
-				username: el.username,
-				password: el.password
-			});
-		}
-	}
+	/** csv column => json key */
+	this.mapping = {
+		"name": "service",
+		"url": "url",
+		"username": "username",
+		"password": "password"
+	};
 }
 
-// TODO: mapping from config
+KeyParser.prototype.setMapping = function(mapping) {
+	this.mapping = mapping;
+};
+
+KeyParser.prototype.parse = function(data) {
+	var self = this;
+
+	var obj = JSON.parse(data);
+	if (!obj.data) throw "No data object in JSON";
+
+	_.forEach(obj.data, function(entry, key) {
+		var resObj = {};
+		_.forEach(self.mapping, function(srcName, destName) {
+			if (entry.hasOwnProperty(srcName)) {
+				resObj[destName] = entry[srcName];
+			} else {
+				console.warn("no key: " + srcName + ": " + JSON.stringify(entry));
+			}
+		});
+		self.results.push(resObj);
+	});
+};
+
 KeyParser.prototype.getCSV = function() {
-	var res = "name,url,username,password\n";
-	for (var index in this.results) {
-		if (this.results.hasOwnProperty(index)) {
-			var el = this.results[index];
-			res += el.name + "," + el.url + "," + el.username + "," + el.password + "\n";
-		}
-	}
+	var self = this;
+	var res = ""; // resulttext
+
+	_.forEach(self.mapping, function(o, k) {
+		res += k + ",";
+	});
+	res = res.slice(0, -1) + "\n";
+
+	_.forEach(self.results, function(res_o, res_k) {
+		_.forEach(res_o, function(val, key) {
+			res += '"' + val + '",';
+		});
+		res = res.slice(0, -1) + "\n";
+	});
+
 	return res;
 };

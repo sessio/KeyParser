@@ -1,4 +1,8 @@
 $(function() {
+	/***
+	Handle dropare events
+	*/
+
 	var zclient = new ZeroClipboard(document.getElementById("copy-results"));
 
 	$("#show-results").click(function() {
@@ -11,15 +15,9 @@ $(function() {
 
 		reader.onload = function(data) {
 			try {
-				var exportsObj;
-				try {
-					exportsObj = JSON.parse(data.target.result);
-				} catch (err) {
-					throw "Error parsing file " + file.name + ": " + err;
-				}
-
-				var parser = new KeyParser(exportsObj);
-				if (parser.results.length === 0) throw "No passwords inside";
+				var parser = new KeyParser();
+				parser.parse(data.target.result);
+				if (parser.results.length === 0) throw "No passwords in file";
 
 				var csv = parser.getCSV();
 				var dataurl = "data:application/octet-stream," + encodeURIComponent(csv);

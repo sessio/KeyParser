@@ -1,0 +1,20 @@
+doctype html
+html(lang="en")
+	head
+		title= settings.title
+		meta(charset="utf-8")
+		meta(name="description", content=settings.description)
+		meta(name="author", content=settings.author)
+
+		block sitecss
+		block pagecss
+	
+	body
+		block navbar
+		
+		block content
+		
+		block sitejs
+			script(src=settings.sitejs.jquery)
+		
+		block pagejs

@@ -1,18 +1,17 @@
-extends ./layout.jade
+extends layouts/page
 
 block content
 	div(class="container")
 		div(class="app-content")
 			div(id="app-alerts")
-			include templates/app/droparea.html
+			include html/droparea.html
 			
-block js			
+block pagejs
 	script(src="/assets/zeroclipboard/dist/ZeroClipboard.min.js")
 	script(src="/assets/json3/lib/json3.min.js")
-
 	if (settings.env.debugjs)
 		script(src="/debugjs/alerts.js")
 		script(src="/debugjs/droparea.js")
 		script(src="/debugjs/parser.js")
-	else		
+	else
 		script(src="/js/build.js")
