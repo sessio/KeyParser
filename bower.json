@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "json3": "~3.3.2",
-    "zeroclipboard": "~2.2.0"
+    "zeroclipboard": "~2.2.0",
+    "lodash": "~3.10.0"
   }
 }
