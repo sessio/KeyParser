@@ -62,6 +62,25 @@ module.exports = function(grunt) {
     exec: {
       clearwww: 'rm -rf dist && mkdir -p dist/css && mkdir -p dist/js',
       copywww: 'cp -R public/css/* dist/css'
+    },
+
+    env: {
+      dev: {
+        NODE_ENV: "development"
+      },
+      prod: {
+        NODE_ENV: "production"
+      }
+    },
+
+    forever: {
+      prod: {
+        options: {
+          index: "server/index.js",
+          logDir: "production.logs",
+          outFile: "stdout.log"
+        }
+      }
     }
   });
 
@@ -71,19 +90,33 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-forever');
+  grunt.loadNpmTasks('grunt-env');
 
   grunt.registerTask('default', [
+    'env:dev',
     'jshint',
     'exec:clearwww',
     'exec:copywww',
     'concurrent:dev'
   ]);
 
-  grunt.registerTask('deploy', [
+  grunt.registerTask('prod', [
+    'env:prod',
     'exec:clearwww',
     'exec:copywww',
     'uglify',
     'nodemon:prod'
   ]);
+
+  grunt.registerTask('deploy-start', [
+    'env:prod',
+    'exec:clearwww',
+    'exec:copywww',
+    'uglify',
+    'forever:prod:start'
+  ]);
+
+  grunt.registerTask('deploy-stop', ['forever:prod:stop']);
 
 };
